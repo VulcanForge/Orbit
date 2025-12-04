@@ -1,7 +1,6 @@
 <Solution>
   <Configurations>
     <Platform Name="x64" />
-    <Platform Name="x86" />
   </Configurations>
   <Project Path="Orbit.vcxproj" Id="cdeaf089-81c8-4016-8ace-977047f374c2" />
 </Solution>
