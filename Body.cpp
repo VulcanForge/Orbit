@@ -50,18 +50,23 @@ void InitializeGlobals()
     shader = ShaderProgram::CreateBasicShaderProgramWithNames("Body", "Shaders/Body.vert", "Shaders/Body.frag");
 }
 
-Body::Body(glm::vec2 position, float radius, float mass)
-    : position(position), radius(radius), mass(mass)
+Body::Body(glm::vec2 position, glm::vec2 velocity, float radius, float mass)
+    : position(position), velocity(velocity), radius(radius), mass(mass)
 {
     if(vertices.empty())
         InitializeGlobals();    
+}
+
+void Body::Update(float elapsed)
+{
+    position += elapsed * velocity;
 }
 
 void Body::Render(glm::mat4 view)
 {
     glBindVertexArray(vao);
     shader->UseProgram();
-    glm::mat4 transform = view * glm::translate(glm::scale(glm::mat4(1), { radius, radius, 1 }), glm::vec3(position, 0));
+    glm::mat4 transform = view * glm::translate(glm::mat4(1), glm::vec3(position, 0)) * glm::scale(glm::mat4(1), { radius, radius, 1 });
     shader->SetUniformMat4("transform", transform);
     glDrawElements(GL_TRIANGLE_FAN, VERTEX_COUNT + 2, GL_UNSIGNED_INT, 0);
 }
