@@ -9,6 +9,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "Body.h"
+#include "Universe.h"
 
 int main()
 {
@@ -40,7 +41,8 @@ int main()
         return EXIT_FAILURE;
     }
 
-    Body body({ -float(mode->width) / float(mode->height), 0 }, { 0.0625, 0 }, 0.0625, 1);
+    bodies.emplace_back(glm::vec2 { -0.5 * mode->width / mode->height, 0 }, glm::vec2 { 0, 1.f / 8 }, 1.f / 64, 0);
+    bodies.emplace_back(glm::vec2 { 0, 0 }, glm::vec2{ 0, 0 }, 1.f / 16, 1.f / 64);
     glm::mat4 view = glm::scale(glm::mat4(1), { float(mode->height) / float(mode->width), 1, 1 });
 
     float lastTime = glfwGetTime();
@@ -51,10 +53,10 @@ int main()
         float thisTime = glfwGetTime();
         float elapsed = thisTime - lastTime;
         lastTime = thisTime;
-        body.Update(elapsed);
+        UpdateBodies(elapsed);
 
         glClear(GL_COLOR_BUFFER_BIT);
-        body.Render(view);
+        RenderBodies(view);
         glfwSwapBuffers(window);
 
         glfwPollEvents();
