@@ -46,12 +46,16 @@ int main()
     glm::mat4 view = glm::scale(glm::mat4(1), { float(mode->height) / float(mode->width), 1, 1 });
 
     float lastTime = glfwGetTime();
-    glfwSwapInterval(1);
+    float startTime = lastTime;
+    float maxFrameTime = 0;
+    unsigned int numberFrames = 0;
 
     while(!glfwWindowShouldClose(window))
     {
         float thisTime = glfwGetTime();
         float elapsed = thisTime - lastTime;
+        maxFrameTime = fmaxf(elapsed, maxFrameTime);
+        ++numberFrames;
         lastTime = thisTime;
         UpdateBodies(elapsed);
 
@@ -64,4 +68,7 @@ int main()
 
     glfwDestroyWindow(window);
     glfwTerminate();
+
+    std::cout << "Max frame time: " << maxFrameTime << "\n";
+    std::cout << "Average frame time: " << (lastTime - startTime) / numberFrames << "\n";
 }
